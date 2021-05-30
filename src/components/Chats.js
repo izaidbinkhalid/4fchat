@@ -31,7 +31,7 @@ const Chats = (props) => {
 
       return;
     } else {
-      console.log("user????????????", user);
+      // console.log("user????????????", user);
       axios
         .get("https://api.chatengine.io/users/me/", {
           headers: {
@@ -41,26 +41,28 @@ const Chats = (props) => {
           },
         })
         .then((res) => {
-          console.log("first re", res);
+          // console.log("first re", res);
           setLoading(false);
         })
         .catch((err) => {
-          console.log("err", err);
+          // console.log("err", err);
           let formdata = new FormData();
           formdata.append("username", user.email);
           formdata.append("secret", user.uid);
 
           getFile(user.photoURL).then((avatar) => {
             formdata.append("avatar", avatar, avatar.name);
-            console.log(avatar)
+            // console.log(avatar);
 
             axios
               .post("https://api.chatengine.io/users/", formdata, {
-                headers: {"PRIVATE-KEY": process.env.REACT_APP_CHAT_ENGINE_KEY},
+                headers: {
+                  "PRIVATE-KEY": process.env.REACT_APP_CHAT_ENGINE_KEY,
+                },
               })
               .then(() => setLoading(false))
               .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 setLoading(false);
               });
           });
@@ -68,9 +70,19 @@ const Chats = (props) => {
     }
   }, [user, history]);
 
-  if (!user || Loading) return <div style={{textAlign:'center',margin:'auto',width:"100%",height:"100%"}}>
-      <img src='200.gif' />
-  </div> ;
+  if (!user || Loading)
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          margin: "auto",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <img src="200.gif" alt="loader" />
+      </div>
+    );
 
   return (
     <div className="chats-page">
